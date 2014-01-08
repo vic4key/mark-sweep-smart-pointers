@@ -1,0 +1,1277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+  
+  <meta name="ProgId" content="Word.Document">
+
+  
+  <meta name="Generator" content="Microsoft Word 11">
+
+  
+  <meta name="Originator" content="Microsoft Word 11"><title>A C++ smart pointer library with garbage collection</title><!--[if gte mso 9]><xml>
+
+ <o:DocumentProperties>
+
+  <o:Author>Hugo Etchegoyen</o:Author>
+
+  <o:LastAuthor>Hugo Etchegoyen</o:LastAuthor>
+
+  <o:Revision>17</o:Revision>
+
+  <o:TotalTime>1476</o:TotalTime>
+
+  <o:Created>2010-11-01T18:49:00Z</o:Created>
+
+  <o:LastSaved>2010-11-08T18:02:00Z</o:LastSaved>
+
+  <o:Pages>1</o:Pages>
+
+  <o:Words>1631</o:Words>
+
+  <o:Characters>9301</o:Characters>
+
+  <o:Company>Hasar</o:Company>
+
+  <o:Lines>77</o:Lines>
+
+  <o:Paragraphs>21</o:Paragraphs>
+
+  <o:CharactersWithSpaces>10911</o:CharactersWithSpaces>
+
+  <o:Version>11.5606</o:Version>
+
+ </o:DocumentProperties>
+
+</xml><![endif]--><!--[if gte mso 9]><xml>
+
+ <w:WordDocument>
+
+  <w:ActiveWritingStyle Lang="ES-AR" VendorID="64" DLLVersion="131078"
+
+   NLCheck="1">1</w:ActiveWritingStyle>
+
+  <w:ActiveWritingStyle Lang="EN-US" VendorID="64" DLLVersion="131078"
+
+   NLCheck="1">1</w:ActiveWritingStyle>
+
+  <w:PunctuationKerning/>
+
+  <w:ValidateAgainstSchemas/>
+
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+
+  <w:Compatibility>
+
+   <w:BreakWrappedTables/>
+
+   <w:SnapToGridInCell/>
+
+   <w:WrapTextWithPunct/>
+
+   <w:UseAsianBreakRules/>
+
+   <w:DontGrowAutofit/>
+
+  </w:Compatibility>
+
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+
+ </w:WordDocument>
+
+</xml><![endif]--><!--[if gte mso 9]><xml>
+
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+
+ </w:LatentStyles>
+
+</xml><![endif]-->
+  
+
+  
+
+  
+  <style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:536871559 0 0 0 415 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoFootnoteText, li.MsoFootnoteText, div.MsoFootnoteText
+	{mso-style-noshow:yes;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+span.MsoFootnoteReference
+	{mso-style-noshow:yes;
+	vertical-align:super;}
+span.MsoEndnoteReference
+	{vertical-align:super;}
+ /* Page Definitions */
+ @page
+	{mso-footnote-separator:url("gcptr_archivos/header.html") fs;
+	mso-footnote-continuation-separator:url("gcptr_archivos/header.html") fcs;
+	mso-endnote-separator:url("gcptr_archivos/header.html") es;
+	mso-endnote-continuation-separator:url("gcptr_archivos/header.html") ecs;}
+@page Section1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ @list l0
+	{mso-list-id:411590179;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-151751460 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l0:level1
+	{mso-level-tab-stop:18.0pt;
+	mso-level-number-position:left;
+	margin-left:18.0pt;
+	text-indent:-18.0pt;}
+@list l0:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1
+	{mso-list-id:915164447;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1989234608 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l1:level1
+	{mso-level-tab-stop:18.0pt;
+	mso-level-number-position:left;
+	margin-left:18.0pt;
+	text-indent:-18.0pt;}
+@list l1:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2
+	{mso-list-id:2118404700;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-253877014 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l2:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+  </style><!--[if gte mso 10]>
+
+<style>
+
+ /* Style Definitions */
+
+ table.MsoNormalTable
+
+	{mso-style-name:"Tabla normal";
+
+	mso-tstyle-rowband-size:0;
+
+	mso-tstyle-colband-size:0;
+
+	mso-style-noshow:yes;
+
+	mso-style-parent:"";
+
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+
+	mso-para-margin:0cm;
+
+	mso-para-margin-bottom:.0001pt;
+
+	mso-pagination:widow-orphan;
+
+	font-size:10.0pt;
+
+	font-family:"Times New Roman";
+
+	mso-ansi-language:#0400;
+
+	mso-fareast-language:#0400;
+
+	mso-bidi-language:#0400;}
+
+</style>
+
+<![endif]--></head><body lang="EN-US">
+<div class="Section1">
+<p class="MsoNormal" style="text-align: center;" align="center"><b style=""><span style="font-family: Verdana;">A C++ smart pointer
+library with
+garbage collection<o:p></o:p></span></b></p>
+<p style="text-align: justify;" class="MsoNormal"><b style=""><span style="font-family: Verdana;"><o:p>&nbsp;</o:p></span></b></p>
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"><b style=""><span style="font-size: 10pt; font-family: Verdana;">Summary<o:p></o:p></span></b></p>
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<div style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">This
+library defines a class of
+smart pointers that can be used to create
+and manage dynamic objects and arrays, which are destroyed and freed by
+garbage collection when they are no longer referenced. These smart
+pointers are not based on reference counting. Garbage collection uses a
+mark-and-sweep algorithm. The
+library requires some C++11 features, and it has been compiled and
+tested in Linux with GCC 4.6. </span><br>
+<span style="font-size: 10pt; font-family: Verdana;">
+</span><br>
+<span style="font-size: 10pt; font-family: Verdana;">
+The implementation is </span><span style="font-size: 10pt; font-family: Verdana;">in two files, gcptr.h and
+gcptr.cc. The user interface is in namespace gcptr.</span><br>
+<span style="font-size: 10pt; font-family: Verdana;">
+</span><span style="font-size: 10pt; font-family: Verdana; font-weight: bold;"><br></span><span style="font-size: 10pt; font-family: Verdana;">
+Main features:<o:p></o:p></span>
+
+<span style="font-size: 10pt; font-family: Verdana;"></span>
+
+</div>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"></span></p>
+<div style="text-align: justify;">
+</div>
+<div>
+</div>
+<ul style="text-align: justify;">
+  <li><span style="font-size: 10pt; font-family: Verdana;"><o:p></o:p></span><span style="font-size: 10pt; font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span style="font-size: 10pt; font-family: Verdana;">A single smart pointer class manages both single objects
+and object arrays. Single objects are handled as single-element
+arrays.</span></li>
+  
+  
+  <li><span style="font-size: 10pt; font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span style="font-size: 10pt; font-family: Verdana;">Managed objects and arrays are created by calling a smart pointer method. This method allocates a block of
+memory for the objects and uses placement new to
+construct them. The<o:p></o:p></span><span style="font-size: 10pt; font-family: Symbol;"><span style=""></span></span><span style="font-size: 10pt; font-family: Verdana;"> objects can be of any type.&nbsp; <o:p>
+</o:p></span></li>
+  <li><span style="font-size: 10pt; font-family: Verdana;">There are no weak pointers,
+since mark-and-sweep tolerates cyclic references. <br>
+</span></li>
+  
+
+  <li><span style="font-size: 10pt; font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span style="font-size: 10pt; font-family: Verdana;">Multithreading is supported.</span></li>
+</ul>
+<div style="text-align: justify;">
+</div>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p><br>
+</o:p></span></p>
+
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-weight: bold;"></span><br>
+</span></p>
+<p style="text-align: justify; font-weight: bold;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;">Design criteria and implementation<br>
+</span></p>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;">In the design of this library the following problems were faced:</span></p>
+
+
+<ul style="text-align: justify;">
+  <li><span style="font-size: 10pt; font-family: Verdana;">The
+reference-counting system has a number of problems, the most obvious of
+which is its its poor handling of cyclic references and the need to
+introduce weak pointers to alleviate this situation (and complicate
+programmers' lives).</span></li>
+  <li><span style="font-size: 10pt; font-family: Verdana;">If
+reference counting is not used, a smart pointer usually references an
+object by just pointing to it. If such a
+smart pointer is the only reference to an object and is made to point
+somewhere else for a while, then the object might
+dissapear. This is very likely to happen if, for
+example, a smart pointer is used to iterate an object array and is left pointing to one past the last
+element of the array.<br>
+    </span></li>
+<li><span style="font-size: 10pt; font-family: Verdana;">If referencing
+is based on pointing, there must be a way to tell which
+object a smart pointer is pointing to. This would require using some
+kind
+of associative container where an object can be looked up by address.
+Lookup would probably be an O(log n) operation and the cost of using a
+container is not trivial.<br>
+    </span></li><li><span style="font-size: 10pt; font-family: Verdana;">There must
+be a way to tell if a smart pointer is a root or a member of a managed
+object. This can be solved by either declaring roots and members
+explicitly (both ugly and unfriendly) or by using the same associative
+container (and paying the lookup cost again).<br>
+    </span></li>
+</ul>
+
+
+
+<p style="text-align: justify;" class="MsoNormal"><br>
+<span style="font-size: 10pt; font-family: Verdana;"></span></p>
+
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;">These problems were solved by:</span></p>
+
+<ul>
+  <li style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Using mark-and-sweep instead of reference counting.</span></li>
+  <li style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Separating
+the smart pointer's referencing and pointing functions, so that object
+referencing does not depend on where a smart pointer points to. <br>
+    </span></li>
+<li style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Using an object construction algorithm that automatically detects members and roots without requiring object lookup.</span></li>
+</ul>
+
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<div style="text-align: justify;">
+<span style="font-size: 10pt; font-family: Verdana;"><o:p>The
+implementation is based on two structures: smart pointers and memory
+blocks. Grouping these structures according to their status is done
+with simple O(1) list operations using link pointers embedded in the
+structures. No associative containers are used. </o:p></span><br>
+
+</div>
+<p class="MsoNormal" style="text-align: justify;"><b style=""><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></b></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Managed object arrays are contained in memory blocks. Each memory block has a
+header
+and memory for the objects. The header holds some information for
+managing the objects, such as a
+pointer to a function used to destroy the object array when it is
+collected as garbage, memory size and number of
+elements, a list of member smart pointers (smart
+pointers embedded in
+the
+objects) and a couple of flags for the mark-and-sweep algorithm. Memory
+blocks are organized in singly-linked lists, so a link pointer to the
+next block in a list is also included in the header. List insertions and
+removals are simple and fast push/pop operations.<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Blocks are always in
+one of these lists:<o:p></o:p></span>
+  <span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+
+
+<ul style="text-align: justify;"><li><span style="font-size: 10pt; font-family: Verdana;">A
+thread-local construction stack.
+When a managed object array is created, a memory block is
+allocated and pushed on
+this stack. Then the
+objects are constructed in place. Constructors may create other managed
+objects, so other blocks may be recursively allocated and pushed on the
+construction stack. The block at the top of the stack always contains
+the most nested object, whose constructor is currently running.<br>
+ </span></li><li><span style="font-size: 10pt; font-family: Verdana;">A
+thread-local new blocks list.
+Each block
+in this list holds a fully constructed object array, which it is not yet a candidate for garbage collection.</span></li><li><span style="font-size: 10pt; font-family: Verdana;"><o:p>The
+global active blocks list. Blocks in this list are candidates for
+garbage collection. <br>
+    </o:p></span></li>
+
+</ul>
+
+<p class="MsoNormal" style="text-align: justify;"><br>
+<b style=""><span style="font-size: 10pt; font-family: Verdana;"></span></b></p><b style=""><span style="font-size: 10pt; font-family: Verdana;"></span></b>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;">At
+creation time, a smart pointer is classified as either a root or a
+member. The algorithm is very simple: those whose addresses are contained in the object memory area of the block at
+the top of the construction stack are members, the rest are roots. They are accordingly inserted in one of two lists:<o:p> <br>
+</o:p></span></p>
+<div>
+</div>
+<ul style="text-align: justify;">
+  
+  <li><span style="font-size: 10pt; font-family: Verdana;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span style="font-size: 10pt; font-family: Verdana;">Members
+are placed in a singly-linked list whose head is in the memory block at the top of the construction stack.<o:p>
+Singly-linking is enough, since members are never removed from the
+list. They just disappear when the object they are members of is
+destroyed.<br>
+</o:p></span></li>
+
+  
+  <li><span style="font-size: 10pt; font-family: Verdana;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span style="font-size: 10pt; font-family: Verdana;">Roots
+(automatic variables,
+global/static
+variables and members of objects not managed by the garbage collector)
+are placed in the global doubly-linked roots list. This is the only
+case when doubly-linking is needed, since a root's destructor must remove
+it from the list.<br>
+</span></li></ul>
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"></p>
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<div style="text-align: justify;">
+</div><br>
+<span style="font-size: 10pt; font-family: Verdana;"><span style="font-weight: bold;">Attachment and pointer value</span><br></span>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;">
+</span><span style="font-size: 10pt; font-family: Verdana;">Our smart pointers contain
+two real pointers:<o:p></o:p></span></p>
+
+
+<div style="text-align: justify;">
+</div>
+
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+
+<div style="text-align: justify;">
+</div>
+
+<p style="text-align: justify; margin-left: 40px;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span><span style="font-family: Liberation Mono;">void
+*pval;&nbsp;&nbsp;  &nbsp;&nbsp;  // pointing pointer</span><o:p style="font-family: Liberation Mono;"></o:p></span></p>
+
+<div style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;">
+</div>
+
+<p style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;" class="MsoNormal"><span style="font-size: 10pt;"><span style=""></span>mblock
+*mem;&nbsp;&nbsp;  &nbsp; // referencing pointer<o:p></o:p></span></p>
+
+<div style="text-align: justify; font-family: Liberation Mono;">
+</div>
+
+<p style="text-align: justify; font-family: Liberation Mono;" class="MsoNormal"><span style="font-size: 10pt;"><o:p>&nbsp;</o:p></span></p>
+
+<div style="text-align: justify;">
+</div>
+
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;">The default constructor sets both to null. There are also two link pointers used for grouping the smart pointers into lists.
+The total size of the structure is 4 pointers. <br>
+</span></p>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;">Member pval is the
+pointer value. De-referencing a smart
+pointer throws if pval is null. Apart from this, if mem is null a smart
+pointer behaves like a real pointer and may point anywhere.</span></p>
+
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<span style="font-size: 10pt; font-family: Verdana;"><o:p></o:p></span>
+<div style="text-align: justify;">
+</div>
+
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;">When
+mem is not null,
+it points to a memory block.
+The smart pointer is attached to the object array
+contained in the block. An attached smart pointer may also point anywhere, but de-referencing it is
+subject to
+bounds checking and throws if pval does not point within the address
+range of the attached object array. The
+garbage collector determines which memory blocks are accessible by following smart pointer attachments, starting from the
+roots.<o:p></o:p></span></p>
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;">Attachment
+is first obtained when a smart pointer creates an object or object array, and may be
+explicitly or implicitly transmitted to other smart pointers or
+explicitly released. Making a smart pointer point to different
+addresses (i.e. changing the value of pval) does not affect its
+attachment.</span></p>
+<p style="text-align: justify;" class="MsoNormal"></p>
+<span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span>
+<p class="MsoNormal" style="text-align: justify; font-style: italic; font-weight: bold;"><span style="font-size: 10pt; font-family: Verdana;">The following operations affect both attachment and pointer value:</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">1. Creation of managed objects and object arrays:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><span style="">&nbsp;</span><o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span><span style="font-family: Liberation Mono;">p.alloc(args...);<br>
+</span></span></p>
+
+<div style="margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;">p.alloc_array(nelems, args...);</span></span></div>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;"></span></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">These methods create a managed object or object array. Each object is
+initialized with the given constructor arguments. When alloc() returns, p is attached
+to and points to the object; when alloc_array() returns, p is attached to the object array and points to its first element. <br>
+</span></p>
+<span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;"><br>
+</span></span>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">2. Copy construction,
+assignment and casting to a smart
+pointer of a different type. These operations just copy mem and pval.<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><span style="">&nbsp;</span><o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span></span><span style="font-size: 10pt; font-family: Liberation Mono;">ptr&lt;double&gt;
+p1, p2;<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;"><span style=""></span>p1.alloc(2.34);<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;"><span style=""></span>p2
+= p1;</span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;">ptr&lt;double&gt; p3(p1);</span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;">ptr&lt;char[8]&gt; p4(p1);<br>
+</span></p>
+
+
+<p class="MsoNormal" style="text-align: justify; font-family: Liberation Mono;"><span style="font-size: 10pt;"><o:p><br>
+</o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">P1, p2, p3 and p4 are all attached
+to and point to the same double, initialized to 2.34.<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">3. There are two
+constructors of smart pointers to object
+members or array elements. Their first argument is a smart pointer to
+the
+object or array; the second one may be either a pointer to class member
+or the
+address of a member or element. The resulting smart pointer will be
+attached
+to the same object array as the first one (if any):<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span><span style="font-family: Liberation Mono;">struct
+T</span><o:p style="font-family: Liberation Mono;"></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;"><span style=""></span>{<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 80px; font-family: Liberation Mono;"><span style="font-size: 10pt;"><span style=""></span>double
+d;<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 80px; font-family: Liberation Mono;"><span style="font-size: 10pt;"><span style=""></span>int
+n;<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 80px; font-family: Liberation Mono;"><span style="font-size: 10pt;"><span style=""></span></span><span style="font-size: 10pt;" lang="PT-BR">T(double
+_d, int _n) : d(_d), n(_n) { }<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;" lang="PT-BR"><span style=""></span>};<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;" lang="PT-BR"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;" lang="PT-BR"><span style=""></span>ptr&lt;T&gt;
+p;<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;" lang="PT-BR"><span style=""></span>p.alloc(2.34,
+55);<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;" lang="PT-BR"><span style=""></span></span><span style="font-size: 10pt;" lang="SV">ptr&lt;int&gt;
+pm(p,<span style="">
+</span>&amp;T::n); <o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; font-family: Liberation Mono;"><span style="font-size: 10pt;" lang="SV"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Now pm is attached to
+the same T object as p and points to its member n. The constructor
+could also
+use the member’s address directly:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span><span style="font-family: Liberation Mono;">ptr&lt;int&gt;
+pm(p, &amp;p-&gt;n);</span><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">And this is also equivalent</span><span style="font-size: 10pt; font-family: Verdana;"> (see the attach() method below)</span><span style="font-size: 10pt; font-family: Verdana;">:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span></span><span style="font-size: 10pt; font-family: Liberation Mono;" lang="SV">ptr&lt;int&gt;
+pm = &amp;p-&gt;n;<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;" lang="SV"><span style=""></span></span><span style="font-size: 10pt;">pm.attach(p);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""><span style="font-family: Liberation Mono;">&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size: 10pt; font-family: Verdana;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Make a smart pointer attached to an array and pointing to one of its members:<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span></span><span style="font-size: 10pt; font-family: Liberation Mono;" lang="SV">ptr&lt;int&gt;
+pa;</span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Liberation Mono;" lang="SV">pa.alloc_array(10);</span></p>
+
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Liberation Mono;" lang="SV">ptr&lt;int&gt; pe(pa, &amp;pa[3]);</span></p>
+<span style="font-family: Liberation Mono;"><br>
+</span><span style="font-size: 10pt; font-family: Verdana;"><span style=""><span style="font-family: Liberation Mono;"></span></span></span><p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-style: italic; font-weight: bold;">The following operations affect attachment, but not the pointer value:</span><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">4. The attach(const ptr
+&amp;) method attaches the smart
+pointer to the same object array as another one, without changing its
+pointer
+value. It returns true if the smart pointer is attached. The two smart
+pointers
+may be of the same or different types:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span><span style="font-family: Liberation Mono;">p1.attach(p2);</span><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-left: 18pt; text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">P1 is now attached to
+the same object array as p2, but its pointer value has not changed.<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">5. The constructor of an element of an object array may attach
+a smart pointer to the array by calling attach() with no arguments:<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span><span style="font-family: Liberation Mono;">T::T()</span><o:p style="font-family: Liberation Mono;"></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;"><span style=""></span>{
+<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 80px; font-family: Liberation Mono;"><span style="font-size: 10pt;"><span style=""></span>...<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 80px; font-family: Liberation Mono;"><span style="font-size: 10pt;"><span style=""></span>p.attach();<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 80px; font-family: Liberation Mono;"><span style="font-size: 10pt;"><span style=""></span>...<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;">}</span><o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">This
+attaches p to the object array that contains the object whose
+constructor is running. This only makes sense if called directly or indirectly from a
+constructor. <i style=""><o:p></o:p></i></span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><span style="">&nbsp;</span><o:p></o:p></span><span style="font-size: 10pt; font-family: Verdana;"><span style="">&nbsp;&nbsp;&nbsp; 
+</span></span><span style="font-size: 10pt; font-family: Verdana;"><o:p></o:p></span>
+
+<span style="font-size: 10pt; font-family: Verdana;"></span></p><p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">6. Method detach()
+breaks attachment by setting mem to
+null.<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">7. Method is_attached()
+tells whether a smart pointer is
+attached.</span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-weight: bold; font-style: italic;">The following operations affect the pointer value, but not attachment:</span><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><br>
+<b style=""><span style="font-size: 10pt; font-family: Verdana;"></span></b></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">8. Construction and assigment from a real pointer:</span></p>
+<p class="MsoNormal" style="text-align: justify;"><br>
+<span style="font-size: 10pt; font-family: Verdana;"></span></p>
+<div style="margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"></span><span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;"><span style="font-family: Liberation Mono;">int n;</span><br style="font-family: Liberation Mono;">
+<span style="font-family: Liberation Mono;">
+ptr&lt;int&gt; p1(&amp;n);</span><br style="font-family: Liberation Mono;">
+<span style="font-family: Liberation Mono;">
+ptr&lt;int&gt; p2;</span><br style="font-family: Liberation Mono;">
+<span style="font-family: Liberation Mono;">
+p2 = &amp;n;</span><br>
+
+</span></span></div>
+<br>
+<span style="font-family: Verdana;"></span><span style="font-size: 10pt; font-family: Verdana;">9. Pointer displacements:<br>
+<br>
+</span>
+<div style="margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;">p++;<br style="font-family: Liberation Mono;"><span style="font-family: Liberation Mono;">
+p--;</span><br style="font-family: Liberation Mono;"><span style="font-family: Liberation Mono;">
+++p;</span><br style="font-family: Liberation Mono;"><span style="font-family: Liberation Mono;">
+--p;</span><br style="font-family: Liberation Mono;"><span style="font-family: Liberation Mono;">
+p += n;</span><br style="font-family: Liberation Mono;"><span style="font-family: Liberation Mono;">
+p -= n;</span><br>
+</span></span></div>
+<p class="MsoNormal" style="text-align: justify; font-style: italic; font-weight: bold;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-style: italic; font-weight: bold;">The following operations no not affect either attachment or pointer value:</span><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><b style=""><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></b></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">10. De-referencing:</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"></span><b style=""><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></b></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;">T *t = p;</span></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;">U x = p-&gt;n;</span></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;">T t = *p;</span></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;">T &amp;t = p[10];<br>
+</span></span></p>
+<p class="MsoNormal" style="text-align: justify;"><b style=""><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></b></p>
+<p class="MsoNormal" style="text-align: justify;"><b style=""><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></b></p>
+<p class="MsoNormal" style="text-align: justify;"><b style=""><span style="font-size: 10pt; font-family: Verdana;">Creating managed objects and object arrays<o:p></o:p></span></b></p>
+
+
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p><br>
+Managed object arrays are created using the alloc_array() method:<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span><span style="font-family: Liberation Mono;">p.alloc_array(nelems);</span></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;">p.alloc_array(nelems, init_zero);</span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;">p.alloc_array(nelems, args...);</span></p><p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Single objects may be created with the alloc() method:<br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><br>
+<span style="font-size: 10pt; font-family: Verdana;"></span></p>
+<div style="margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style="font-family: Liberation Mono;">p.alloc();</span></span></div>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;">
+</p>
+<p class="MsoNormal" style="text-align: justify; font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">p.alloc(init_zero);</span></p>
+
+<p class="MsoNormal" style="text-align: justify; font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">p.alloc(args...);</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+which is the same as alloc_array() with nelems = 1.<br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">When
+these methods are called without constructor arguments, the objects are
+initialized with their default constructor if it is not trivial,
+otherwise, they are not initialized. This is the same behaviour
+as expected from "new T" and "new T[nelems]":</span></p><br>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;">ptr&lt;int&gt; p;</span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;">p.alloc_array(5);&nbsp; &nbsp;  <br>
+</span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+As int has a trivial default constructor, this creates an array of 5 uninitialized ints, as if we had called "new int[5]".<br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><br>
+<span style="font-size: 10pt; font-family: Verdana;"></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Optionally, the special constant init_zero may be passed as the
+second argument of alloc_array() or the single argument of alloc(). This constant is not considered a constructor
+argument, but an indication that memory allocated for the objects
+should be initially filled with zeroes:</span></p>
+<p class="MsoNormal" style="text-align: justify;"><br>
+<span style="font-size: 10pt; font-family: Verdana;"></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;">p.alloc_array(5, init_zero);</span></p>
+<span style="font-family: Verdana;"></span><p class="MsoNormal" style="text-align: justify;"><br>
+<span style="font-size: 10pt; font-family: Verdana;"></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">This creates an array of 5 ints initialized to 0. Do not use init_zero
+with types that have non-trivial default constructors. It is a
+(harmless) waste of time, since memory will be initially filled with
+zeroes and then initialized again by the constructors.<br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">When one or more constructor arguments are given, they
+are forwarded to each object’s matching constructor:<br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><br>
+<span style="font-size: 10pt; font-family: Verdana;"></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px; font-family: Liberation Mono;"><span style="font-size: 10pt;">p.alloc_array(5, 17);</span></p>
+
+<span style="font-family: Verdana;"></span><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">This creates an array of 5 ints initialized to 17.</span></p>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+
+<div style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Alloc() and alloc_array() allocate a memory block with a header and memory for the objects and
+push it on the construction stack. <o:p></o:p></span>
+</div>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Then they construct the objects (if applicable) by calling placement new
+on the memory area of each object. The object constructors
+may in turn call alloc_array() or alloc(), so new blocks may be
+recursively
+pushed on the construction stack. <o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Object
+constructors
+may also
+bring to life smart pointers. When a smart pointer is constructed, if
+the construction stack is not
+empty and the smart pointer's address is contained in the object memory
+area of the block at the top, then the smart pointer is a member of the
+object
+whose constructor is currently running. It is accordingly placed in the
+members list of the top block. Otherwise the smart pointer is a root
+and it
+is inserted in the global roots lists.<br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">Once its objects are
+constructed, the top block is
+popped from the construction stack
+and pushed on the new blocks list. Finally, when the bottom or first-level
+objects are fully constructed and the construction stack is empty,&nbsp; the new blocks are activated and moved to the global
+active blocks list.</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p><span style="font-size: 10pt; font-family: Verdana;"><o:p></o:p></span><span style="font-size: 10pt; font-family: Verdana;">Managed objects or arrays should not be deleted. The library offers no protection against this.</span>
+
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><b style=""><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></b></p>
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><b style=""><span style="font-size: 10pt; font-family: Verdana;">The garbage collector<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><b style=""><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></b></p>
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><span style="font-size: 10pt; font-family: Verdana;">The garbage
+collector uses the mark-and-sweep algorithm.<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">The
+mark phase iterates
+the roots list. For each attached
+root it marks its memory block and recursively iterates the
+list of
+members of that block. This marks all blocks directly or indirectly
+accessible
+from the roots. This phase has a cost that depends on the number
+of roots and accessible blocks.<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">The
+sweep phase
+iterates the active blocks list. Marked
+blocks are unmarked. Unmarked blocks are garbage, their object arrays
+are
+destroyed and their memory is released. This phase has one cost proportional to the number of active blocks, and another one
+proportional to the amount of garbage (cost of running the object destructors and freeing
+memory).<br>
+</span></p><p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">The user interface to
+the garbage collector has two
+functions:<o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span><span style="font-family: Liberation Mono;">unsigned
+collect();</span><o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 10pt; font-family: Verdana;">This function runs a
+garbage collection cycle and returns
+the amount of object memory freed.&nbsp;</span></p>
+<p class="MsoNormal" style="text-align: justify;"><br>
+<span style="font-size: 10pt; font-family: Verdana;"><span style=""></span><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid; margin-left: 40px;"><span style="font-size: 10pt; font-family: Verdana;"><span style=""></span><span style="font-family: Liberation Mono;">unsigned
+collect_threshold(unsigned newthr = 0);</span><o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><span style="font-size: 10pt; font-family: Verdana;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><span style="font-size: 10pt; font-family: Verdana;">The
+garbage collector keeps track of the amount of object memory allocated since
+the last
+collection. When it reaches a certain threshold, a new collection will take
+place immediately before the next allocation. The function
+above allows
+reading the threshold and setting a new value, if called with a
+non-zero
+argument. <br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><span style="font-size: 10pt; font-family: Verdana;">The
+default threshold value is 100K. The optimum setting has to be
+determined experimentally. Lowering the threshold will increase the
+frequency of collections, which will probably have a negative impact on
+efficiency because both the mark and sweep phases have some costs that do not
+depend on the amount of garbage. On the other hand, less garbage will
+be destroyed and freed in the sweep phase, making collection time
+shorter.</span></p>
+<p class="MsoNormal" style="text-align: justify; page-break-after: avoid;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+
+
+<span style="font-size: 10pt; font-family: Verdana;"></span>
+<p class="MsoNormal"><b style=""><span style="font-size: 10pt; font-family: Verdana;" lang="ES-AR"><br>
+</span></b></p>
+<p class="MsoNormal"><b style=""><span style="font-size: 10pt; font-family: Verdana;" lang="ES-AR">Multithreading</span></b></p>
+
+
+<p style="text-align: justify;" class="MsoNormal"><span style="font-weight: bold;"><br>
+</span></p>
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-weight: bold;"></span><span style="font-size: 10pt; font-family: Verdana;"></span><span style="font-size: 10pt; font-family: Verdana;">Internal operations related to
+the creation and destruction of smart pointers, memory block handling, garbage collection, etc.
+are thread-safe. These operations have been serialized using mutexes and some thread-local storage.<br>
+</span></p>
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"><br>
+<span style="font-size: 10pt; font-family: Verdana;"></span></p>
+<div style="text-align: justify;">
+</div>
+<p style="text-align: justify;" class="MsoNormal"><span style="font-size: 10pt; font-family: Verdana;">The
+non-const smart pointer methods, on the other hand, are not thread
+safe. They could be easily mutexed, but the cost is probably not justified.
+This implies that different threads should not attempt concurrent non-const operations
+(like p++ or p.alloc()) on the same smart pointer.<br>
+</span></p>
+<div style="text-align: justify;">
+</div>
+
+
+<p class="MsoNormal"><b style=""><span style="font-size: 10pt; font-family: Verdana;" lang="ES-AR"><br>
+</span></b></p>
+<p class="MsoNormal"><b style=""><span style="font-size: 10pt; font-family: Verdana;" lang="ES-AR"><br>
+</span></b></p><b style=""></b>
+<p class="MsoNormal"><b style=""><span style="font-size: 10pt; font-family: Verdana;" lang="ES-AR">Public interface</span></b></p>
+
+
+
+<p class="MsoNormal"><b style=""><span style="font-size: 10pt; font-family: Verdana;" lang="ES-AR"><br>
+</span></b></p>
+<p style="font-family: Liberation Mono;" class="MsoNormal"><span style="font-size: 10pt;" lang="ES-AR">Class ptr&lt;T&gt;:</span><span style="font-size: 10pt;" lang="ES-AR"><o:p></o:p></span></p>
+
+
+<p style="font-family: Liberation Mono; margin-left: 40px;" class="MsoNormal"><span style="font-size: 10pt;" lang="ES-AR"><o:p>&nbsp;</o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">// Constructors and assignment<br>
+</span></span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">ptr(</span></span><span style="font-size: 10pt;">);<o:p></o:p></span></p>
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">ptr(</span></span><span style="font-size: 10pt;">const ptr &amp;src);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">const</span></span><span style="font-size: 10pt;"> ptr &amp;operator =(const ptr
+&amp;src);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">template</span></span><span style="font-size: 10pt;"> &lt;typename U&gt; explicit
+ptr(const ptr&lt;U&gt; &amp;src);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">template</span></span><span style="font-size: 10pt;"> &lt;typename U&gt; ptr(const
+ptr&lt;U&gt; &amp;src, T U::*pm);<o:p></o:p></span></p>
+
+
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">template</span></span><span style="font-size: 10pt;"> &lt;typename U&gt; ptr(const
+ptr&lt;U&gt; &amp;src, T *p);<o:p><br>
+</o:p></span></p>
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">ptr(</span></span><span style="font-size: 10pt;">T *p);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;"></span></span><span style="font-size: 10pt;">ptr &amp;operator =(T *p);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p><br>
+</o:p></span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p>// Destructor&nbsp;</o:p></span></p>
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">~<span class="GramE">ptr(</span>);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p><br>
+</o:p></span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p>// Attachment&nbsp;</o:p></span></p>
+
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">bool</span></span><span style="font-size: 10pt;"> attach(const basic_ptr &amp;p);<o:p></o:p></span></p>
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">bool</span></span><span style="font-size: 10pt;"> attach();<o:p></o:p></span></p>
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">bool</span></span><span style="font-size: 10pt;"> is_attached() const;<o:p></o:p></span></p>
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">void</span></span><span style="font-size: 10pt;"> detach();<o:p></o:p></span></p>
+
+
+
+<div style="margin-left: 40px;"><br style="font-family: Liberation Mono;">
+<span style="font-size: 10pt;"></span></div>
+
+
+
+
+
+
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p>// Cast to real pointer and de-reference&nbsp;</o:p></span></p>
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">operator</span></span><span style="font-size: 10pt;"> T *() const;<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">T *operator -<span class="GramE">&gt;(</span>) const;<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">T &amp;operator *() const;<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">T &amp;operator [<span class="GramE">](</span>int n) const;<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p><br>
+</o:p></span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p>// Pointer arithmetic&nbsp;</o:p></span></p>
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;"></span></span><span style="font-size: 10pt;">ptr &amp;operator ++();<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">const</span></span><span style="font-size: 10pt;"> ptr operator ++(int);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;"></span></span><span style="font-size: 10pt;">ptr &amp;operator --();<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">const</span></span><span style="font-size: 10pt;"> ptr operator --(int);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;"></span></span><span style="font-size: 10pt;">ptr &amp;operator +=(int n);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;"></span></span><span style="font-size: 10pt;">ptr &amp;operator -=(int n);<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">const</span></span><span style="font-size: 10pt;"> ptr operator +(int n) const;<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">const</span></span><span style="font-size: 10pt;"> ptr operator -(int n) const;<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">const</span></span><span style="font-size: 10pt;"> int operator -(const ptr &amp;p)
+const;<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p><br>
+</o:p></span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p>// Create an object array with one or more constructor arguments</o:p></span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p>template &lt;typename U, typename... V&gt;<br>
+</o:p></span></p>
+
+<div style="margin-left: 40px;"><span style="font-size: 10pt;"><o:p></o:p></span></div>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;" lang="ES-AR">void</span></span><span style="font-size: 10pt;" lang="ES-AR">
+alloc_array(unsigned nelems, U&amp;&amp; first, V&amp;&amp;... rest);<span style=""></span><o:p></o:p></span></p>
+<div style="margin-left: 40px;"><br style="font-family: Liberation Mono;">
+</div>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p>// Create an object array without arguments</o:p></span></p>
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><o:p>void alloc_array(unsigned nelems, initspec_t init = init_undef)<br>
+</o:p></span></p>
+
+
+<div style="margin-left: 40px;"><br>
+</div>
+
+<p style="font-family: Liberation Mono; margin-left: 40px;" class="MsoNormal"><span style="font-size: 10pt;">// Create a single object with one or more constructor arguments<br>
+template &lt;typename U, typename... V&gt;<br>
+void alloc(U&amp;&amp; first, V&amp;&amp;... rest)<br>
+</span></p>
+<p style="font-family: Liberation Mono; margin-left: 40px;" class="MsoNormal"><span style="font-size: 10pt;"><br>
+</span></p>
+<p style="font-family: Liberation Mono; margin-left: 40px;" class="MsoNormal"><span style="font-size: 10pt;">// Create a single object without arguments.<br>
+void alloc(initspec_t init = init_undef)<br>
+</span></p>
+<p style="font-family: Liberation Mono;" class="MsoNormal"><span style="font-size: 10pt;"><br>
+</span></p>
+<p style="font-family: Liberation Mono;" class="MsoNormal"><span style="font-size: 10pt;">Global functions:</span><span style="font-size: 10pt;"><o:p></o:p></span><span style="font-size: 10pt;"><o:p><br>
+<br>
+</o:p></span></p>
+
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">// Collect garbage</span></span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span class="GramE"><span style="font-size: 10pt;">unsigned</span></span><span style="font-size: 10pt;"> collect();<o:p></o:p></span></p>
+
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;"><br>
+</span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">// Get/set threshold for garbage collection<br>
+</span></p>
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">unsigned collect_<span class="GramE">threshold(</span>unsigned
+newthr = 0);</span></p><p class="MsoNormal" style="margin-left: 6.24pt; font-family: Liberation Mono;"><br>
+
+<span style="font-size: 10pt;"></span></p><p class="MsoNormal" style="margin-left: 0px; width: 1314px; font-family: Liberation Mono;"><span style="font-size: 10pt;">Constants:<br>
+</span></p>
+<br style="font-family: Liberation Mono;">
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">// Initialize memory to zero  <br>
+</span></p>
+<p class="MsoNormal" style="font-weight: bold; margin-left: 40px;"><span style="font-size: 10pt; font-family: Liberation Mono; font-weight: normal;">const initspec_t init_undef;&nbsp;&nbsp;  // no</span><small style="font-family: Liberation Mono; font-weight: normal;"><small><span style="font-size: 10pt;"></span></small></small><br>
+<small style="font-family: Liberation Mono; font-weight: normal;"><small><span style="font-size: 10pt;"></span></small></small><span style="font-size: 10pt; font-family: Liberation Mono; font-weight: normal;">const initspec_t init_zero;&nbsp;&nbsp;&nbsp;  // yes</span></p><br>
+<p class="MsoNormal" style="margin-left: 0px; width: 1314px; font-family: Liberation Mono;"><span style="font-size: 10pt;">Standard library dependencies:<br>
+</span></p>
+
+<br style="font-family: Liberation Mono;">
+
+
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">&lt;utility&gt;</span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">&lt;type_traits&gt;</span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">&lt;mutex&gt;</span></p>
+<p class="MsoNormal" style="font-family: Liberation Mono; margin-left: 40px;"><span style="font-size: 10pt;">&lt;algorithm&gt;<br>
+</span></p>
+
+<p class="MsoNormal" style="font-weight: bold; margin-left: 40px;"><span style="font-size: 10pt; font-family: Liberation Mono; font-weight: normal;"></span><span style="font-size: 10pt; font-family: Liberation Mono; font-weight: normal;"><br>
+</span></p>
+<span style="font-family: &quot;Times New Roman&quot;;"><span style="font-weight: bold;"></span></span><p class="MsoNormal" style="margin-left: 6.24pt; font-weight: bold;"><small style="font-family: Liberation Mono; font-weight: normal;"><small><span style="font-size: 10pt;"></span></small></small></p>
+<p class="MsoNormal" style="margin-left: 36pt; font-weight: bold;"><br>
+<span style="font-size: 10pt; font-family: Verdana;"></span></p>
+
+<p class="MsoNormal" style="margin-left: 36pt;"><span style="font-size: 10pt; font-family: Verdana;"><br>
+</span></p>
+</div></body></html>
