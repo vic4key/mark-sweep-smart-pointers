@@ -1,1 +1,1 @@
-[/wiki/gcptr.html]
+[http:///wiki/gcptr.html]
