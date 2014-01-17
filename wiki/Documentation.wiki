@@ -1,1 +1,1 @@
-[http://mark-sweep-smart-pointers.googlecode.com/svn/trunk/gcptr.html gcptr.html]
+[file://svn/trunk/gcptr.html gcptr.html]
