@@ -1,1 +1,0 @@
-[http://mark-sweep-smart-pointers.googlecode.com/svn/wiki/gcptr.html]
