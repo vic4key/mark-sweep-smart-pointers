@@ -1,1 +1,1 @@
-[file:///trunk/gcptr.html gcptr.html]
+[file:///svn/trunk/gcptr.html gcptr.html]
